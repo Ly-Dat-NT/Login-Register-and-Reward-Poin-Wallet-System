@@ -82,6 +82,12 @@ int main() {
             }
             cout << "Nhập số tiền muốn chuyển: ";
             cin >> amount;                                          
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << " Số tiền không hợp lệ.\n";
+                continue;
+            }
             Wallet& fromWallet = itFrom->second.getWallet(); 
             Wallet& toWallet = itTo->second.getWallet();
             string otp = generateOTP();
