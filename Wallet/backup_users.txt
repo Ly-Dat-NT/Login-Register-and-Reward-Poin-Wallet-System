@@ -1,0 +1,4 @@
+thanh,1112,user,6xdQs7k4,1000,0,lythanh,10/09/2006,0987484322
+he,12,user,auX0hq1U,1000,0,lyth,10/21,322222
+admin1,111,admin,hkhkh34,10000,0,tahnh,10/09/2006,0929384443
+ha,th,user,GyA6QaeZ,1000,0,ttt,10/09/2006,09794743
