@@ -14,8 +14,8 @@ int main() {
     while (true) {
         cout << "\n========= MENU =========\n";
         cout << "1. Tạo tài khoản\n";
-        cout << "2. Nạp tiền\n";
-        cout << "3. Chuyển tiền \n";
+        cout << "2. Nạp điểm\n";
+        cout << "3. Chuyển điểm \n";
         cout << "4. Xem số dư\n";
         cout << "5. Xem lịch sử giao dịch\n";
         cout << "0. Thoát\n";
@@ -37,7 +37,7 @@ int main() {
         } else if (command == "2") {
             string username;
             double amount;
-            cout << "Nhập tên tài khoản muốn nạp tiền: ";
+            cout << "Nhập tên tài khoản muốn nạp điểm: ";
             cin >> username;
 
             auto itUser = accounts.find(username);
@@ -51,7 +51,7 @@ int main() {
                 continue;
             }
 
-            cout << "Nhập số tiền muốn nạp: ";
+            cout << "Nhập số điểm muốn nạp: ";
             cin >> amount;
 
             Wallet& adminWallet = itAdmin->second.getWallet();
@@ -62,9 +62,9 @@ int main() {
                 Transaction tx("admin", username, amount, "Thành công");
                 adminWallet.addTransaction(tx);
                 userWallet.addTransaction(tx);
-                cout << " Nạp tiền thành công.\n";
+                cout << " Nạp điểm thành công.\n";
             } else {
-                cout << " Ví tổng không đủ tiền để nạp.\n";
+                cout << " Ví tổng không đủ điểm để nạp.\n";
             }
 
         } else if (command == "3") {
@@ -80,12 +80,12 @@ int main() {
                 cout << "️ Tài khoản không tồn tại.\n";
                 continue;
             }
-            cout << "Nhập số tiền muốn chuyển: ";
+            cout << "Nhập số điểm muốn chuyển: ";
             cin >> amount;                                          
             if (cin.fail()) {
                 cin.clear();
                 cin.ignore(1000, '\n');
-                cout << " Số tiền không hợp lệ.\n";
+                cout << " Số điểm không hợp lệ.\n";
                 continue;
             }
             Wallet& fromWallet = itFrom->second.getWallet(); 
@@ -114,8 +114,8 @@ int main() {
                     fromWallet.addTransaction(tx);
                 }
             } else {
-                cout << " Số dư không đủ để chuyển tiền.\n";
-                Transaction tx(from, to, amount, "Thất bại: không đủ tiền");
+                cout << " Số dư không đủ để chuyển điểm.\n";
+                Transaction tx(from, to, amount, "Thất bại: không đủ điểm");
                 fromWallet.addTransaction(tx);
             }
         } else if (command == "4") {
