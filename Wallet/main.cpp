@@ -134,7 +134,27 @@ void viewWallet(const User &u) {
     if(choice == 0) clearScreen();
 }
 
+bool verifyOTP(const string &otp) {
+    string input;
+    cout << "Nhap OTP: ";
+    cin >> input;
+    return input == otp;
+}
+
+//ĐỔI MẬT KHẨU
 void changePassword(User &u) {
+    string otp = generateOTP();
+    cout << "Ma OTP cua ban la: " << otp << endl;
+
+    if (!verifyOTP(otp)) {
+        cout << "OTP khong hop le. Khong the doi mat khau.\n";
+        cout << "Nhan 0 De Tro Lai:";
+        int choice;
+        cin >> choice;
+        if(choice == 0) clearScreen();
+        return;
+    }
+
     cout << "\nNhap Mat Khau Moi: ";
     string newPass;
     cin >> newPass;
@@ -149,11 +169,33 @@ void changePassword(User &u) {
     if(choice == 0) clearScreen();
 }
 
-bool verifyOTP(const string &otp) {
-    string input;
-    cout << "Nhap OTP: ";
-    cin >> input;
-    return input == otp;
+//ĐỔI SỐ ĐIỆN THOẠI
+void changePhoneNumber(User &u) {
+    string otp = generateOTP();
+    cout << "Ma OTP cua ban la: " << otp << endl;
+
+    if (!verifyOTP(otp)) {
+        cout << "OTP khong hop le. Khong the doi so dien thoai.\n";
+        cout << "Nhan 0 de tro lai:";
+        int choice;
+        cin >> choice;
+        if (choice == 0) clearScreen();
+        return;
+    }
+
+    cout << "Nhap So Dien Thoai Moi: ";
+    string newPhone;
+    cin.ignore();
+    getline(cin, newPhone);
+
+    u.phone = newPhone;
+    saveUsers();
+
+    cout << "Doi So Dien Thoai Thanh Cong!\n";
+    cout << "Nhan 0 de tro lai:";
+    int choice;
+    cin >> choice;
+    if (choice == 0) clearScreen();
 }
 
 void transferPoints(User &u) {
@@ -210,19 +252,20 @@ void userMenu(User &u) {
     do {
         clearScreen();
         cout << "\n--- GIAO DIEN NGUOI DUNG ---\n";
-        cout << "1. Xem Vi\n2. Chuyen Diem\n3. Doi Mat Khau\n0. Dang Xuat\nChon: ";
+        cout << "1. Xem Vi\n2. Chuyen Diem\n3. Doi Mat Khau\n4. Doi So Dien Thoai\n0. Dang Xuat\nChon: ";
         cin >> choice;
         if (choice == 1) viewWallet(u); 
         else if (choice == 2) transferPoints(u);
         else if (choice == 3) changePassword(u);
+        else if (choice == 4) changePhoneNumber(u);
     } while (choice != 0);
 }
 
 void createUser(bool isAdmin = false) {
     User u;
-    cout << "Nhap Ten Nguoi Dung: "; cin >> u.username;
+    cout << "Ten Dang Nhap: "; cin >> u.username;
     if (users.count(u.username)) {
-        cout << "Ten Nguoi Dung Da Ton Tai.\n";
+        cout << "Ten Dang Nhap Da Ton Tai.\n";
         return;
     }
     u.walletId = generateRandomString(8);
@@ -310,14 +353,14 @@ void adminMenu(User &admin) {
 
 void login() {
     string user, pass;
-    cout << "\nTai Khoan: "; cin >> user;
+    cout << "\nTen dang nhap: "; cin >> user;
     cout << "Mat Khau: "; cin >> pass;
     if (users.count(user) && users[user].password == pass) {
         cout << "Dang Nhap Thanh Cong.\n";
         if (users[user].role == "admin") adminMenu(users[user]);
         else userMenu(users[user]);
     } else {
-        cout << "Thong Tin Khong Hop Le.\n";
+        cout << "Sai ten dang nhap hoac mat khau.\n";
     }
 }
 
