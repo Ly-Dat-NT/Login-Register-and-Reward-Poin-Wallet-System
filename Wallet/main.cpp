@@ -222,6 +222,7 @@ void transferPoints(User &u) {
                 cout << "OTP Khong Hop Le. Giao Dich Bi Huy\n";
                 return;
             }
+            cout << "Giao Dich Thanh Cong!\n";
             u.balance -= amount;
             usr.balance += amount;
 
@@ -231,7 +232,6 @@ void transferPoints(User &u) {
 
             saveUsers();
             saveTransactions();
-            cout << "Giao Dich Thanh Cong!\n";
             return;
         }
     }
@@ -351,34 +351,98 @@ void adminMenu(User &admin) {
     } while (choice != 0);
 }
 
-void login() {
-    string user, pass;
-    cout << "\nTen dang nhap: "; cin >> user;
-    cout << "Mat Khau: "; cin >> pass;
-    if (users.count(user) && users[user].password == pass) {
-        cout << "Dang Nhap Thanh Cong.\n";
-        if (users[user].role == "admin") adminMenu(users[user]);
-        else userMenu(users[user]);
-    } else {
-        cout << "Sai ten dang nhap hoac mat khau.\n";
+// ---- Thêm hàm Quên Mật Khẩu ----
+void forgotPassword() {
+    string username;
+    cout << "Nhap Ten Dang Nhap: ";
+    cin >> username;
+    if (!users.count(username)) {
+        cout << "Khong tim thay tai khoan.\n";
+        cout << "Nhan 0 de tro lai:";
+        int tmp;
+        cin >> tmp;
+        if (tmp == 0) clearScreen();
+        return;
     }
+
+    User &u = users[username];
+    string otp = generateOTP();
+    cout << "Ma OTP cua ban la: " << otp << endl;
+
+    if (!verifyOTP(otp)) {
+        cout << "OTP khong hop le. Khong the dat lai mat khau.\n";
+        cout << "Nhan 0 de tro lai:";
+        int tmp;
+        cin >> tmp;
+        if (tmp == 0) clearScreen();
+        return;
+    }
+
+    cout << "Nhap Mat Khau Moi: ";
+    string newPass;
+    cin >> newPass;
+    u.password = newPass;
+    u.isTempPassword = false;
+
+    saveUsers();
+    cout << "Dat lai mat khau thanh cong!\n";
+    cout << "Nhan 0 de tro lai:";
+    int tmp;
+    cin >> tmp;
+    if (tmp == 0) clearScreen();
+}
+
+// ---- Cập nhật hàm đăng nhập và menu chính ----
+void login() {
+    string username, password;
+    int choice;
+
+    do {
+        clearScreen();
+        cout << "--- DANG NHAP HE THONG ---\n";
+        cout << "1. Dang Nhap\n";
+        cout << "2. Dang Ky\n";
+        cout << "3. Quen Mat Khau\n";  // <-- Thêm lựa chọn Quên mật khẩu
+        cout << "0. Thoat\n";
+        cout << "Chon: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            cout << "Nhap Ten Dang Nhap: ";
+            cin >> username;
+            cout << "Nhap Mat Khau: ";
+            cin >> password;
+
+            if (users.count(username) && users[username].password == password) {
+                User &u = users[username];
+                if (u.role == "admin") {
+                    adminMenu(u);
+                } else {
+                    userMenu(u);
+                }
+            } else {
+                cout << "Dang nhap that bai.\n";
+                cout << "Nhan 0 de thu lai:";
+                int tmp;
+                cin >> tmp;
+                if (tmp == 0) clearScreen();
+            }
+        } else if (choice == 2) {
+            clearScreen();
+            createUser();
+        } else if (choice == 3) {
+            clearScreen();
+            forgotPassword();  // <-- Gọi hàm quên mật khẩu
+        }
+    } while (choice != 0);
 }
 
 int main() {
-    srand(static_cast<unsigned int>(time(0)));
+    srand((unsigned)time(NULL));
     loadUsers();
     loadTransactions();
 
-    int choice;
-    do {
-        clearScreen();
-        cout << "\n---- HE THONG DIEM THUONG ----\n";
-        cout << "1. Dang nhap\n2. Dang ky\n0. Thoat\nChon: ";
-        cin >> choice;
-        cin.ignore();
-        if (choice == 1) login();
-        else if (choice == 2) createUser();
-    } while (choice != 0);
-    cout << "Tam biet!\n";
+    login();
+
     return 0;
 }
