@@ -14,6 +14,15 @@ void clearScreen() {
     system("cls");
 }
 
+// --- HASH PASSWORD ---
+string singleHash(const string &input) {
+    unsigned long hash = 0;
+    for (char c : input) {
+        hash = (hash * 131) ^ c;  // Hash nhân-prime và XOR
+    }
+    return to_string(hash);
+}
+
 // CẤU TRÚC DỮ LIỆU
 struct User {
     string username;
@@ -141,7 +150,6 @@ bool verifyOTP(const string &otp) {
     return input == otp;
 }
 
-//ĐỔI MẬT KHẨU
 void changePassword(User &u) {
     string otp = generateOTP();
     cout << "Ma OTP cua ban la: " << otp << endl;
@@ -158,7 +166,7 @@ void changePassword(User &u) {
     cout << "\nNhap Mat Khau Moi: ";
     string newPass;
     cin >> newPass;
-    u.password = newPass;
+    u.password = singleHash(newPass);
     u.isTempPassword = false;
     saveUsers();
     saveTransactions();
@@ -169,7 +177,6 @@ void changePassword(User &u) {
     if(choice == 0) clearScreen();
 }
 
-//ĐỔI SỐ ĐIỆN THOẠI
 void changePhoneNumber(User &u) {
     string otp = generateOTP();
     cout << "Ma OTP cua ban la: " << otp << endl;
@@ -279,12 +286,14 @@ void createUser(bool isAdmin = false) {
     string pass;
     getline(cin, pass);
     if (pass.empty()) {
-        u.password = generateRandomString(6);
+        string rawPass = generateRandomString(6);
+        u.password = singleHash(rawPass);
         u.isTempPassword = true;
-        cout << "Tao Mat Khau Tu Dong: " << u.password << endl;
+        cout << "Tao Mat Khau Tu Dong: " << rawPass << endl;
     } else {
-        u.password = pass;
+        u.password = singleHash(pass);
     }
+
     u.role = isAdmin ? "admin" : "user";
     users[u.username] = u;
     saveUsers();
@@ -351,7 +360,6 @@ void adminMenu(User &admin) {
     } while (choice != 0);
 }
 
-// ---- Thêm hàm Quên Mật Khẩu ----
 void forgotPassword() {
     string username;
     cout << "Nhap Ten Dang Nhap: ";
@@ -381,7 +389,7 @@ void forgotPassword() {
     cout << "Nhap Mat Khau Moi: ";
     string newPass;
     cin >> newPass;
-    u.password = newPass;
+    u.password = singleHash(newPass);
     u.isTempPassword = false;
 
     saveUsers();
@@ -392,7 +400,6 @@ void forgotPassword() {
     if (tmp == 0) clearScreen();
 }
 
-// ---- Cập nhật hàm đăng nhập và menu chính ----
 void login() {
     string username, password;
     int choice;
@@ -402,7 +409,7 @@ void login() {
         cout << "--- DANG NHAP HE THONG ---\n";
         cout << "1. Dang Nhap\n";
         cout << "2. Dang Ky\n";
-        cout << "3. Quen Mat Khau\n";  // <-- Thêm lựa chọn Quên mật khẩu
+        cout << "3. Quen Mat Khau\n";
         cout << "0. Thoat\n";
         cout << "Chon: ";
         cin >> choice;
@@ -413,7 +420,7 @@ void login() {
             cout << "Nhap Mat Khau: ";
             cin >> password;
 
-            if (users.count(username) && users[username].password == password) {
+            if (users.count(username) && users[username].password == singleHash(password)) {
                 User &u = users[username];
                 if (u.role == "admin") {
                     adminMenu(u);
@@ -432,17 +439,15 @@ void login() {
             createUser();
         } else if (choice == 3) {
             clearScreen();
-            forgotPassword();  // <-- Gọi hàm quên mật khẩu
+            forgotPassword();
         }
     } while (choice != 0);
 }
 
 int main() {
-    srand((unsigned)time(NULL));
+    srand((unsigned)time(0));
     loadUsers();
     loadTransactions();
-
     login();
-
     return 0;
 }
