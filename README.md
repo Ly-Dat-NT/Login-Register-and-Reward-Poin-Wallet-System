@@ -23,11 +23,11 @@ Ngôn ngữ sử dụng: **C++**
 | Trần Văn Tiến Đạt      | Backend tài khoản.              |- Tạo class User và quản lý tài khoản.                |
 |                        |                                 |- Đăng ký, đăng nhập, đổi mật khẩu.                   |
 |                        |                                 |- Quản lý phân quyền (user/admin).                    | 
-|                        |                                 |- OTP xác nhận thay đổi thông tin.                    |
+|                        |                                 |- OTP.                                                |
 | Nguyễn Thành Đạt       | Ví và giao dịch.                |- Tạo class Wallet, Transaction.                      |
 |                        |                                 |- Chuyển điểm giữa ví.                                |
 |                        |                                 |- Giao dịch đảm bảo tính atomic (ACID).               |
-|                        |                                 |- OTP giao dịch - Lịch sử giao dịch.                  |
+|                        |                                 |- Lịch sử giao dịch.                                  |
 
 ---
 
@@ -56,6 +56,15 @@ Ngôn ngữ sử dụng: **C++**
 
 ---
 
-## Biên Dịch Chương Trình
+## Cài Đặt và Biên Dịch Chương Trình
+
+### Yêu Cầu
 - Trình biên dịch hỗ trợ C++11 trở lên (G++, Clang++, MSVC...)
 - Hệ điều hành: Windows (vì dùng `system("cls")` để xóa màn hình)
+
+### Cách Tải Và Biên Dịch
+1. **Tải file ZIP**
+- Truy cập Github -> Nhấn code -> Chọn download ZIP
+- Giải nén và vào thư mục dự án
+2. **Biên Dịch Bằng G++**
+- g++ main.cpp -o wallet
