@@ -49,10 +49,12 @@ string generateRandomString(int length) {
     return result;
 }
 
+//TẠO MÃ OTP
 string generateOTP() {
     return to_string(100000 + rand() % 900000);
 }
 
+//GHI DS NGƯỜI DÙNG RA FILE
 void saveUsers(const string& filename = "users.txt") {
     ofstream file(filename);
     for (const auto &pair : users) {
@@ -63,6 +65,7 @@ void saveUsers(const string& filename = "users.txt") {
     }
 }
 
+//ĐỌC DỮ LIỆU NGƯỜI DÙNG TỪ FILE
 void loadUsers(const string& filename = "users.txt") {
     users.clear();
     ifstream file(filename);
@@ -93,11 +96,13 @@ void loadUsers(const string& filename = "users.txt") {
     }
 }
 
+//SAO LƯU
 void backupUsers() {
     saveUsers("backup_users.txt");
     cout << "\nSao Luu Du Lieu Khach Hang Thanh Cong\n";
 }
 
+//LƯU LỊCH SỬ GIAO DỊCH
 void saveTransactions() {
     ofstream file("transactions.txt");
     for (const auto &pair : transactions) {
@@ -107,6 +112,7 @@ void saveTransactions() {
     }
 }
 
+//ĐỌC LỊCH SỬ GIAO DỊCH
 void loadTransactions() {
     transactions.clear();
     ifstream file("transactions.txt");
@@ -121,6 +127,7 @@ void loadTransactions() {
     }
 }
 
+//XEM VÍ
 void viewWallet(const User &u) {
     cout << "\n[THONG TIN VI]" << endl;
     cout << "Ho Ten: " << u.fullName << endl;
@@ -143,6 +150,7 @@ void viewWallet(const User &u) {
     if(choice == 0) clearScreen();
 }
 
+//XÁC MINH MÃ OTP
 bool verifyOTP(const string &otp) {
     string input;
     cout << "Nhap OTP: ";
@@ -150,6 +158,7 @@ bool verifyOTP(const string &otp) {
     return input == otp;
 }
 
+//ĐỔI MẬT KHẨU
 void changePassword(User &u) {
     string otp = generateOTP();
     cout << "Ma OTP cua ban la: " << otp << endl;
@@ -177,6 +186,8 @@ void changePassword(User &u) {
     if(choice == 0) clearScreen();
 }
 
+
+//ĐỔI SỐ ĐIỆN THOẠI
 void changePhoneNumber(User &u) {
     string otp = generateOTP();
     cout << "Ma OTP cua ban la: " << otp << endl;
@@ -205,6 +216,7 @@ void changePhoneNumber(User &u) {
     if (choice == 0) clearScreen();
 }
 
+//CHUYỂN ĐIỂM
 void transferPoints(User &u) {
     string targetWallet;
     int amount;
@@ -249,6 +261,7 @@ void transferPoints(User &u) {
     if(choice == 0) clearScreen();
 }
 
+//GIAO DIỆN NGƯỜI DÙNG
 void userMenu(User &u) {
     if (u.isTempPassword) {
         cout << "Day La Mat Khau Tam Thoi. Vui Long Doi Mat Khau\n";
@@ -268,6 +281,7 @@ void userMenu(User &u) {
     } while (choice != 0);
 }
 
+//TẠO TÀI KHOẢN NGƯỜI DÙNG
 void createUser(bool isAdmin = false) {
     User u;
     cout << "Ten Dang Nhap: "; cin >> u.username;
@@ -305,6 +319,7 @@ void createUser(bool isAdmin = false) {
     if(choice == 0) clearScreen();
 }
 
+//GIAO DIỆN QUẢN LÝ
 void adminMenu(User &admin) {
     int choice;
     do {
@@ -360,6 +375,7 @@ void adminMenu(User &admin) {
     } while (choice != 0);
 }
 
+//QUÊN MẬT KHẨU
 void forgotPassword() {
     string username;
     cout << "Nhap Ten Dang Nhap: ";
@@ -400,6 +416,7 @@ void forgotPassword() {
     if (tmp == 0) clearScreen();
 }
 
+//ĐĂNG NHẬP
 void login() {
     string username, password;
     int choice;
