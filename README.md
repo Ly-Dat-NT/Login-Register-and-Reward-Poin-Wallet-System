@@ -26,7 +26,6 @@ Ngôn ngữ sử dụng: **C++**
 |                        |                                 |- OTP.                                                |
 | Nguyễn Thành Đạt       | Ví và giao dịch.                |- Tạo class Wallet, Transaction.                      |
 |                        |                                 |- Chuyển điểm giữa ví.                                |
-|                        |                                 |- Giao dịch đảm bảo tính atomic (ACID).               |
 |                        |                                 |- Lịch sử giao dịch.                                  |
 
 ---
