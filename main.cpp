@@ -219,13 +219,18 @@ void changePhoneNumber(User &u) {
 //CHUYỂN ĐIỂM
 void transferPoints(User &u) {
     string targetWallet;
-    int amount;
+    long long unsigned amount;
 
     cout << "\nNhap ID Vi Cua Nguoi Nhan: ";
     cin >> targetWallet;
 
     cout << "Nhap So Diem Can Chuyen: ";
     cin >> amount;
+
+    if (amount < 0) {
+        cout << "So Diem Phai Lon Hon 0!";
+        return;
+    }
 
     if (u.balance < amount) {
         cout << "So Du Khong Du!\n";
