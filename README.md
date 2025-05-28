@@ -32,118 +32,86 @@ Ngôn ngữ sử dụng: **C++**
 
 ## Đặc Tả Chức Năng
 
-1. Chức năng Người Dùng
+###1. Chức năng Người Dùng
+
 a. Đăng ký tài khoản mới
-Giao diện: Nhập tên đăng nhập, họ tên, ngày sinh, số điện thoại, mật khẩu (có thể bỏ trống).
-
-Tự động xử lý:
-
-Nếu mật khẩu bỏ trống → hệ thống sinh mật khẩu tạm thời (6 ký tự ngẫu nhiên).
-
-Sinh tự động walletId (8 ký tự).
-
-Khởi tạo số dư ví là 1000 điểm.
-
-Đặt isTempPassword = true nếu dùng mật khẩu tạm thời.
+- Giao diện: Nhập tên đăng nhập, họ tên, ngày sinh, số điện thoại, mật khẩu (có thể bỏ trống).
+- Tự động xử lý:
+  - Nếu mật khẩu bỏ trống → hệ thống sinh mật khẩu tạm thời (6 ký tự ngẫu nhiên).
+  - Sinh tự động walletId (8 ký tự).
+  - Khởi tạo số dư ví là 1000 điểm.
+  - Đặt isTempPassword = true nếu dùng mật khẩu tạm thời.
 
 b. Đăng nhập
-Xác thực bằng tên đăng nhập và mật khẩu đã hash qua singleHash.
-
-Nếu là tài khoản admin → vào menu quản trị.
-
-Nếu là tài khoản người dùng → vào menu người dùng.
-
-Nếu là mật khẩu tạm thời → bắt buộc đổi mật khẩu sau khi đăng nhập.
+- Xác thực bằng tên đăng nhập và mật khẩu đã hash qua singleHash.
+- Nếu là tài khoản admin → vào menu quản trị.
+- Nếu là tài khoản người dùng → vào menu người dùng.
+- Nếu là mật khẩu tạm thời → bắt buộc đổi mật khẩu sau khi đăng nhập.
 
 c. Xem thông tin ví
-Hiển thị:
-
-Họ tên, ngày sinh, số điện thoại, số dư, ID ví.
-
-Danh sách lịch sử giao dịch từ transactions[walletId].
+- Hiển thị:
+- Họ tên, ngày sinh, số điện thoại, số dư, ID ví.
+- Danh sách lịch sử giao dịch từ transactions[walletId].
 
 d. Chuyển điểm đến ví khác (xác thực OTP)
-Nhập ID ví người nhận và số điểm muốn chuyển.
-
-Kiểm tra số dư.
-
-Sinh mã OTP và yêu cầu người dùng nhập lại để xác minh.
-
-Nếu OTP đúng:
-
-Trừ điểm người gửi, cộng điểm người nhận.
-
-Ghi giao dịch vào transactions.txt theo dạng:
-
-Người gửi: Đã chuyển X điểm tới ví Y
-
-Người nhận: Đã nhận X điểm từ ví Z
+- Nhập ID ví người nhận và số điểm muốn chuyển.
+- Kiểm tra số dư.
+- Sinh mã OTP và yêu cầu người dùng nhập lại để xác minh.
+- Nếu OTP đúng:
+- Trừ điểm người gửi, cộng điểm người nhận.
+- Ghi giao dịch vào transactions.txt theo dạng:
+- Người gửi: Đã chuyển X điểm tới ví Y
+- Người nhận: Đã nhận X điểm từ ví Z
 
 e. Đổi mật khẩu (có OTP)
-Sinh OTP và yêu cầu xác nhận.
-
-Nếu đúng → yêu cầu nhập mật khẩu mới.
-
-Cập nhật password đã hash lại và đặt isTempPassword = false.
+- Sinh OTP và yêu cầu xác nhận.
+- Nếu đúng → yêu cầu nhập mật khẩu mới.
+- Cập nhật password đã hash lại và đặt isTempPassword = false.
 
 f. Đổi số điện thoại (có OTP)
-Quy trình tương tự như đổi mật khẩu:
+- Quy trình tương tự như đổi mật khẩu:
+- OTP xác minh.
+- Nhập số mới.
+- Ghi đè phone trong User.
 
-OTP xác minh.
+###2. Chức năng Quản Trị Viên
 
-Nhập số mới.
-
-Ghi đè phone trong User.
-
-🛠️ 2. Chức năng Quản Trị Viên
 a. Tạo tài khoản người dùng hoặc quản trị viên
-Tương tự chức năng tạo tài khoản người dùng.
-
-Có thể chỉ định vai trò là "admin" hoặc "user" qua đối số isAdmin.
+- Tương tự chức năng tạo tài khoản người dùng.
+- Có thể chỉ định vai trò là "admin" hoặc "user" qua đối số isAdmin.
 
 b. Xem danh sách tất cả ví điện tử
-Duyệt toàn bộ map users và hiển thị:
-username | fullName | role | walletId | balance
+- Duyệt toàn bộ map users và hiển thị:
+- username | fullName | role | walletId | balance
 
 c. Sao lưu dữ liệu người dùng
-Gọi backupUsers() → ghi toàn bộ users ra file backup_users.txt.
+- Gọi backupUsers() → ghi toàn bộ users ra file backup_users.txt.
 
-⚙️ 3. Chức năng Hệ Thống
+###3. Chức năng Hệ Thống
+
 a. Sinh mã OTP
-Gọi generateOTP() → trả về chuỗi số ngẫu nhiên 6 chữ số (100000–999999).
+- Gọi generateOTP() → trả về chuỗi số ngẫu nhiên 6 chữ số (100000–999999).
 
 b. Sinh ngẫu nhiên ID ví và mật khẩu tạm thời
-Sử dụng generateRandomString(int length) để tạo chuỗi ký tự.
-
-ID ví: 8 ký tự, Mật khẩu tạm: 6 ký tự.
+- Sử dụng generateRandomString(int length) để tạo chuỗi ký tự.
+- ID ví: 8 ký tự, Mật khẩu tạm: 6 ký tự.
 
 c. Tự động lưu và đọc dữ liệu từ file
-users.txt:
+- users.txt:
+- Mỗi dòng lưu 9 trường: username,password,role,walletId,balance,isTempPassword,fullName,dob,phone
+- Đọc và ghi qua loadUsers() và saveUsers()
+- transactions.txt:
+- Mỗi dòng lưu: walletId|message
+- Đọc qua loadTransactions() và ghi bằng saveTransactions().
+- backup_users.txt:
+- Được tạo thông qua backupUsers(), chứa nội dung như users.txt.
 
-Mỗi dòng lưu 9 trường: username,password,role,walletId,balance,isTempPassword,fullName,dob,phone
-
-Đọc và ghi qua loadUsers() và saveUsers()
-
-transactions.txt:
-
-Mỗi dòng lưu: walletId|message
-
-Đọc qua loadTransactions() và ghi bằng saveTransactions().
-
-backup_users.txt:
-
-Được tạo thông qua backupUsers(), chứa nội dung như users.txt.
-
-🔒 Bảo Mật
-Mật khẩu không lưu dạng thuần → dùng hàm hash singleHash().
-
-OTP giúp tăng cường bảo mật khi:
-
-Đổi mật khẩu
-
-Đổi số điện thoại
-
-Chuyển điểm
+d. Bảo Mật
+- Mật khẩu không lưu dạng thuần → dùng hàm hash singleHash().
+- OTP giúp tăng cường bảo mật khi:
+  - Đổi mật khẩu
+  - Đổi số điện thoại
+  - Chuyển điểm
 
 ---
 
